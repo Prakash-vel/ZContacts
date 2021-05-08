@@ -1,13 +1,20 @@
 package com.example.zcontacts.overview
 
+import android.icu.lang.UCharacter
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.zcontacts.R
+import com.example.zcontacts.adapters.ContactAdapter
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentMasterBinding
 
@@ -32,6 +39,24 @@ class MasterFragment : Fragment() {
         val viewModelFactory=MasterFragmentViewModelFactory(dataSource )
         val viewModel=ViewModelProviders.of(this,viewModelFactory).get(MasterFragmentViewModel::class.java)
 
+        val layoutManager=LinearLayoutManager(this.context)
+        binding.recyclerView.layoutManager=layoutManager
+        val adapter=ContactAdapter(ContactAdapter.OnClickListener{
+            viewModel.showDetailView(it)
+        })
+
+
+        viewModel.selectedCountry.observe(this.viewLifecycleOwner, Observer {
+            if(it!=null){
+                this.findNavController().navigate(MasterFragmentDirections.actionMasterFragmentToDetailFragment(it.contactId))
+                viewModel.showDetailViewComplete()
+            }
+        })
+        viewModel.contactData.observe(this.viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+            Log.i("hello","data submitted to recycler View$it")
+        })
+        binding.recyclerView.adapter
 
         return binding.root
     }

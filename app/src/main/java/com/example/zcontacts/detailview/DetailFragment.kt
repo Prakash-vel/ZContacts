@@ -17,8 +17,8 @@ class DetailFragment : Fragment() {
     ): View? {
 //        // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_detail, container, false)
-        val binding=FragmentDetailBinding.inflate(layoutInflater,container,false)
-        binding.lifecycleOwner=this
+        val binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
+        binding.lifecycleOwner = this
         return binding.root
     }
 

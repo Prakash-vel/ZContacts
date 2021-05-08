@@ -39,12 +39,12 @@
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="@string/first_name"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                android:importantForAutofill="no" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <EditText
                 android:id="@+id/lastName"
@@ -57,11 +57,11 @@
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="@string/last_name_optional"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/firstName"
-                android:importantForAutofill="no" />
+                app:layout_constraintTop_toBottomOf="@+id/firstName" />
 
             <EditText
                 android:id="@+id/countryCode"
@@ -107,11 +107,11 @@
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="@string/email_id_optional"
+                android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumber"
-                android:importantForAutofill="no" />
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
 
             <Button
                 android:id="@+id/cancelButton"

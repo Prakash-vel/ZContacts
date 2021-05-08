@@ -20,6 +20,8 @@
         android:id="@+id/detailFragment"
         android:name="com.example.zcontacts.detailview.DetailFragment"
         android:label="DetailFragment" >
+        <argument android:name="selectedContact"
+            app:argType="long"/>
         <action
             android:id="@+id/action_detailFragment_to_masterFragment"
             app:destination="@id/masterFragment" />
