@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/masterFragment">
+
+    <fragment
+        android:id="@+id/masterFragment"
+        android:name="com.example.zcontacts.overview.MasterFragment"
+        android:label="MasterFragment" >
+        <action
+            android:id="@+id/action_masterFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_masterFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.zcontacts.detailview.DetailFragment"
+        android:label="DetailFragment" >
+        <action
+            android:id="@+id/action_detailFragment_to_masterFragment"
+            app:destination="@id/masterFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.example.zcontacts.addcontact.AddContactFragment"
+        android:label="fragment_add_contact"
+        tools:layout="@layout/fragment_add_contact" >
+        <argument android:name="selectedContact"
+            app:argType="long"/>
+        <action
+            android:id="@+id/action_addContactFragment_to_masterFragment"
+            app:destination="@id/masterFragment" />
+        <action
+            android:id="@+id/action_addContactFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.zcontacts.AboutFragment"
+        android:label="AboutFragment" />
+</navigation>

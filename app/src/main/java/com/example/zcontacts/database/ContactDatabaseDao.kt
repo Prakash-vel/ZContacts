@@ -1,0 +1,23 @@
+package com.example.zcontacts.database
+
+import androidx.room.*
+
+@Dao
+interface ContactDatabaseDao {
+
+    @Query("SELECT * FROM contactData ORDER BY contactFirstName")
+    suspend fun getAll(): List<ContactData>
+
+    @Insert
+    fun add(data: ContactData)
+
+    @Query("SELECT * FROM contactData WHERE contactFirstName = :hint OR contactNumber = :hint OR contactLastName = :hint ORDER BY contactFirstName")
+    suspend fun getContact(hint: String): List<ContactData>
+
+    @Update
+    fun updateContact(data: ContactData)
+
+    @Query("DELETE  FROM ContactData WHERE contactId=:KEY")
+    fun deleteContact(KEY: Long)
+
+}
