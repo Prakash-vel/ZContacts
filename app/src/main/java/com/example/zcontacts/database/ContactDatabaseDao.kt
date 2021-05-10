@@ -11,7 +11,7 @@ interface ContactDatabaseDao {
     @Insert
     fun add(data: ContactData)
 
-    @Query("SELECT * FROM contactData WHERE contactFirstName = :hint OR contactNumber = :hint OR contactLastName = :hint ORDER BY contactFirstName")
+    @Query("SELECT * FROM contactData WHERE contactFirstName LIKE :hint OR contactNumber LIKE :hint OR contactLastName LIKE :hint ORDER BY contactFirstName")
     suspend fun getContact(hint: String): List<ContactData>
 
     @Update

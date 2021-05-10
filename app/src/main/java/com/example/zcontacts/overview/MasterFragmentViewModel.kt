@@ -27,10 +27,15 @@ class MasterFragmentViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
     fun showDetailViewComplete() {
         _selectedCountry.value = null
     }
+    fun getContacts(hint: String?){
+
+        repository.getContact(hint)
+    }
 }
 
 class MasterFragmentViewModelFactory(private val dataSource: ContactDatabaseDao) :
     ViewModelProvider.Factory {
+    @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MasterFragmentViewModel::class.java)) {
             return MasterFragmentViewModel(dataSource) as T

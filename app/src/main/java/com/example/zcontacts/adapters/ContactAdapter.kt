@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.databinding.ContactItemBinding
 
+
 class ContactAdapter(val onClickListener: OnClickListener) :
-    ListAdapter<ContactData, ContactAdapter.ViewHolder>(ContactDiffUtil()) {
+    ListAdapter<ContactData,ContactAdapter.ViewHolder>(ContactDiffUtil()) {
 
     class OnClickListener(val clickListener: (contactData: ContactData) -> Unit) {
         fun onClick(contactData: ContactData) = clickListener(contactData)
@@ -43,10 +44,12 @@ class ContactAdapter(val onClickListener: OnClickListener) :
 
 class ContactDiffUtil : DiffUtil.ItemCallback<ContactData>() {
     override fun areItemsTheSame(oldItem: ContactData, newItem: ContactData): Boolean {
+        Log.i("hello", "diffutil called$oldItem")
         return oldItem.contactId == newItem.contactId
     }
 
     override fun areContentsTheSame(oldItem: ContactData, newItem: ContactData): Boolean {
+        Log.i("hello", "diffutil$oldItem")
         return oldItem == newItem
     }
 }

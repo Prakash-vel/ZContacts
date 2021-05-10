@@ -7,8 +7,7 @@
 
     <fragment
         android:id="@+id/masterFragment"
-        android:name="com.example.zcontacts.overview.MasterFragment"
-        android:label="MasterFragment" >
+        android:name="com.example.zcontacts.overview.MasterFragment">
         <action
             android:id="@+id/action_masterFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -32,10 +31,10 @@
     <fragment
         android:id="@+id/addContactFragment"
         android:name="com.example.zcontacts.addcontact.AddContactFragment"
-        android:label="fragment_add_contact"
-        tools:layout="@layout/fragment_add_contact" >
-        <argument android:name="selectedContact"
-            app:argType="long"/>
+        tools:layout="@layout/fragment_add_contact">
+        <argument
+            android:name="selectedContact"
+            app:argType="long" />
         <action
             android:id="@+id/action_addContactFragment_to_masterFragment"
             app:destination="@id/masterFragment" />

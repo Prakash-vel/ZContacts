@@ -37,7 +37,10 @@ class Repository(private val database: ContactDatabaseDao) {
     fun getContact(hint: String?) {
         coroutineScope.launch {
             if (hint != null) {
-                resultData.value = database.getContact(hint)
+                val hintString="%$hint%"
+                Log.i("hello","$hint")
+                resultData.value = database.getContact(hintString)
+
             } else {
                 resultData.value = database.getAll()
 
