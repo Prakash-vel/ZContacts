@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import android.widget.SearchView.OnQueryTextListener as OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -38,34 +37,36 @@ class MasterFragment : Fragment() {
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(MasterFragmentViewModel::class.java)
 
-        val layoutManager = LinearLayoutManager(this.context)
+        val layoutManager = LinearLayoutManager(this.activity)
         binding.recyclerView.layoutManager = layoutManager
+        // binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         val adapter = ContactAdapter(ContactAdapter.OnClickListener {
             viewModel.showDetailView(it)
         })
 
 
+        binding.recyclerView.adapter
 
-        viewModel.selectedCountry.observe(this.viewLifecycleOwner,Observer{
+        viewModel.selectedCountry.observe(this.viewLifecycleOwner, Observer {
             if (it != null) {
                 this.findNavController()
                     .navigate(MasterFragmentDirections.actionMasterFragmentToDetailFragment(it.contactId))
                 viewModel.showDetailViewComplete()
             }
         })
-        viewModel.contactData.observe(this.viewLifecycleOwner,Observer{
+        viewModel.contactData.observe(this.viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Log.i("hello", "data submitted to recycler View$it itemcount${adapter.itemCount}")
         })
-        binding.recyclerView.adapter
+
 
         return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_contacts, menu)
-        val menuItem=menu.findItem(R.id.app_bar_search)
-        val searchView: SearchView= menuItem.actionView as SearchView
+        val menuItem = menu.findItem(R.id.app_bar_search)
+        val searchView: SearchView = menuItem.actionView as SearchView
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -79,7 +80,7 @@ class MasterFragment : Fragment() {
             }
 
         })
-        searchView.setOnCloseListener(object  : SearchView.OnCloseListener{
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener {
             override fun onClose(): Boolean {
                 viewModel.getContacts(hint = null)
                 return true

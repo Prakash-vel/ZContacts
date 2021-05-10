@@ -1,7 +1,6 @@
 package com.example.zcontacts.adapters
 
 import android.util.Log
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.zcontacts.database.ContactData

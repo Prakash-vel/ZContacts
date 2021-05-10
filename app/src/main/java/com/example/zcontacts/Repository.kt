@@ -7,11 +7,6 @@ import com.example.zcontacts.database.ContactDatabaseDao
 import kotlinx.coroutines.*
 
 
-//import android.util.Log
-//import androidx.lifecycle.MutableLiveData
-//import com.example.zcontacts.database.ContactData
-//import com.example.zcontacts.database.ContactDatabaseDao
-//import kotlinx.coroutines.*
 
 class Repository(private val database: ContactDatabaseDao) {
 
@@ -37,8 +32,8 @@ class Repository(private val database: ContactDatabaseDao) {
     fun getContact(hint: String?) {
         coroutineScope.launch {
             if (hint != null) {
-                val hintString="%$hint%"
-                Log.i("hello","$hint")
+                val hintString = "%$hint%"
+                Log.i("hello", "$hint")
                 resultData.value = database.getContact(hintString)
 
             } else {

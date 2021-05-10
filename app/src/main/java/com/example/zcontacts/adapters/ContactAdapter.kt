@@ -10,8 +10,8 @@ import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.databinding.ContactItemBinding
 
 
-class ContactAdapter(val onClickListener: OnClickListener) :
-    ListAdapter<ContactData,ContactAdapter.ViewHolder>(ContactDiffUtil()) {
+class ContactAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<ContactData, ContactAdapter.ViewHolder>(ContactDiffUtil()) {
 
     class OnClickListener(val clickListener: (contactData: ContactData) -> Unit) {
         fun onClick(contactData: ContactData) = clickListener(contactData)
@@ -31,12 +31,16 @@ class ContactAdapter(val onClickListener: OnClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        Log.i("hello", "onBind called$item")
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(item)
+        try {
+            val item = getItem(position)
+            Log.i("hello", "onBind called$item")
+            holder.itemView.setOnClickListener {
+                onClickListener.onClick(item)
+            }
+            holder.bind(item)
+        } catch (e: Exception) {
+            Log.i("hello", "error$e")
         }
-        holder.bind(item)
 
     }
 }

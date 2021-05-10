@@ -27,7 +27,8 @@ class MasterFragmentViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
     fun showDetailViewComplete() {
         _selectedCountry.value = null
     }
-    fun getContacts(hint: String?){
+
+    fun getContacts(hint: String?) {
 
         repository.getContact(hint)
     }

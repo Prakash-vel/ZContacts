@@ -23,6 +23,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
+            android:text="name"
             android:textSize="24sp"
             app:bindName="@{contactData}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +40,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
+            android:text="number"
             app:bindNumber="@{contactData.contactNumber}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,8 +59,8 @@
             android:contentDescription="@string/contact_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent"/>
+<!--            tools:srcCompat="@tools:sample/backgrounds/scenic" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
