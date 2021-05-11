@@ -12,7 +12,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_edge"
+
+        android:layout_margin="4dp">
 
         <TextView
             android:id="@+id/personName"
@@ -23,7 +26,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="name"
             android:textSize="24sp"
             app:bindName="@{contactData}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,6 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
-            android:text="number"
             app:bindNumber="@{contactData.contactNumber}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,12 +56,16 @@
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+           
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/contact_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-<!--            tools:srcCompat="@tools:sample/backgrounds/scenic" />-->
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars"
+            app:bindImg="@{contactData.contactImage}"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

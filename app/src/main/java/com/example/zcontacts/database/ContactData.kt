@@ -23,6 +23,9 @@ data class ContactData(
     var contactNumber: Long = 0L,
 
     @ColumnInfo(name = "contactMail")
-    var contactMail: String = ""
+    var contactMail: String = "",
+
+    @ColumnInfo(name = "contactImage")
+    var contactImage: String = ""
 
 )

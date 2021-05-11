@@ -26,8 +26,8 @@ class ContactAdapter(private val onClickListener: OnClickListener) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.i("hello", "oncreate called at Contact adapter")
-        return ViewHolder(ContactItemBinding.inflate(LayoutInflater.from(parent.context)))
+        Log.i("hello", "onCreate called at Contact adapter")
+        return ViewHolder(ContactItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -48,12 +48,12 @@ class ContactAdapter(private val onClickListener: OnClickListener) :
 
 class ContactDiffUtil : DiffUtil.ItemCallback<ContactData>() {
     override fun areItemsTheSame(oldItem: ContactData, newItem: ContactData): Boolean {
-        Log.i("hello", "diffutil called$oldItem")
+        Log.i("hello", "diffUtil called$oldItem")
         return oldItem.contactId == newItem.contactId
     }
 
     override fun areContentsTheSame(oldItem: ContactData, newItem: ContactData): Boolean {
-        Log.i("hello", "diffutil$oldItem")
+        Log.i("hello", "diffUtil$oldItem")
         return oldItem == newItem
     }
 }
