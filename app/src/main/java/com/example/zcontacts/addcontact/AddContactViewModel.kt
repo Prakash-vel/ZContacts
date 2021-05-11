@@ -9,7 +9,7 @@ import com.example.zcontacts.database.ContactDatabaseDao
 
 class AddContactViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
 
-    val repository = Repository(dataSource)
+    private val repository = Repository(dataSource)
     val selectedData:LiveData<ContactData>
         get()=repository.selectedData
 
@@ -18,16 +18,20 @@ class AddContactViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
 //        if()
 //    }
     fun addContact(data: ContactData, selectedId: Long) {
-        Log.i("hello", "add contact called selected id$selectedId")
+        Log.i("hello", "add contact called in viewmodel selected id$selectedId and data $data")
         if (selectedId == 0L) {
             repository.addContact(data)
+            Log.i("hello","i am adding contact data")
         } else {
             repository.updateContact(data)
+            Log.i("hello","i am  updating data")
         }
     }
 
+
     fun getData(id: Long) {
         repository.getContactByID(id)
+        Log.i("hello","get data $id and selecteddata${selectedData.value}")
         imageUrl.value= selectedData.value?.contactImage
     }
 

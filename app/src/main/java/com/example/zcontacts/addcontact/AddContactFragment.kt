@@ -7,22 +7,21 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.PermissionChecker.checkSelfPermission
-
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.zcontacts.R
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentAddContactBinding
 import kotlinx.android.synthetic.main.fragment_add_contact.*
-import java.security.Permission
 
 
 class AddContactFragment : Fragment() {
@@ -45,11 +44,23 @@ class AddContactFragment : Fragment() {
         binding.viewModel=viewModel
 
         val selectedId = AddContactFragmentArgs.fromBundle(requireArguments()).selectedContact
+        Log.i("hello","add contact selectedId$selectedId")
         if (selectedId != 0L) {
             viewModel.getData(selectedId)
         }
+        viewModel.selectedData.observe(this.viewLifecycleOwner,{
+            if(it.contactImage!=null&& it.contactImage!=""){
+                viewModel.imageUrl.value=it.contactImage
+            }
+        })
         binding.cancelButton.setOnClickListener {
             navigate(selectedId)
+//            val fm: FragmentManager = requireActivity().supportFragmentManager
+//            if (fm.getBackStackEntryCount() > 0) {
+//                fm.popBackStack();
+//            }
+//            fm.beginTransaction().add(R.id.contentPanel, fm)
+//                .addToBackStack(null).commit();
         }
         binding.imageButton.setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -65,7 +76,6 @@ class AddContactFragment : Fragment() {
                 }
             }
             else{
-                //not supported
                 pickFromGallery()
             }
 
@@ -77,6 +87,9 @@ class AddContactFragment : Fragment() {
                     .show()
             } else {
                 val contactData = ContactData()
+                if(selectedId!=0L){
+                    contactData.contactId=selectedId
+                }
                 contactData.contactFirstName = binding.firstName.text.toString()
                 contactData.contactLastName = binding.lastName.text.toString()
                 contactData.contactCountryCode = binding.countryCode.text.toString()
