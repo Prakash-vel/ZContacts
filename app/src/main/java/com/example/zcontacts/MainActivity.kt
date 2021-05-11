@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_ZContacts)
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
