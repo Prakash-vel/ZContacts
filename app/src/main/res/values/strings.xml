@@ -11,4 +11,11 @@
     <string name="phone_number_code">Code</string>
     <string name="_91">+91</string>
     <string name="contact_image">contact Image</string>
+    <string name="mobile">Mobile</string>
+    <string name="mail">Mail</string>
+    <string name="call_action_image">Call Action Image</string>
+    <string name="mail_action_image">Mail Action Image</string>
+    <string name="edit_action_image">Edit Action Image</string>
+    <string name="delete_action_image">Delete Action Image</string>
+    <string name="share_action_image">Share Action Image</string>
 </resources>

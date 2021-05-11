@@ -48,7 +48,7 @@ class MasterFragment : Fragment() {
             viewModel.showDetailView(it)
         })
 
-        binding.recyclerView.adapter=adapter
+        binding.recyclerView.adapter = adapter
 
         //for navigating to detail screen from master screen
         viewModel.selectedCountry.observe(this.viewLifecycleOwner, {

@@ -27,7 +27,13 @@ class ContactAdapter(private val onClickListener: OnClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         Log.i("hello", "onCreate called at Contact adapter")
-        return ViewHolder(ContactItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(
+            ContactItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

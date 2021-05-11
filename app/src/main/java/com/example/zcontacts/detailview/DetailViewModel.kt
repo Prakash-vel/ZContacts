@@ -8,10 +8,11 @@ import com.example.zcontacts.database.ContactDatabaseDao
 
 class DetailViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
 
-    private val repository=Repository(dataSource)
-    val selectedData:LiveData<ContactData>
-       get()=repository.selectedData
-    fun getContact(selectedId: Long){
+    private val repository = Repository(dataSource)
+    val selectedData: LiveData<ContactData>
+        get() = repository.selectedData
+
+    fun getContact(selectedId: Long) {
         repository.getContactByID(selectedId)
 
     }

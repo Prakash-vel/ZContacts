@@ -7,7 +7,6 @@ import com.example.zcontacts.database.ContactDatabaseDao
 import kotlinx.coroutines.*
 
 
-
 class Repository(private val database: ContactDatabaseDao) {
 
     val resultData = MutableLiveData<List<ContactData>>()

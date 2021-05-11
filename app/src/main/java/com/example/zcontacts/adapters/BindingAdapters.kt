@@ -22,24 +22,26 @@ fun bindNum(textView: TextView, text: Long) {
 }
 
 @BindingAdapter("bindImg")
-fun bindImage(imageView: ImageView, url:String?) {
+fun bindImage(imageView: ImageView, url: String?) {
     url?.let {
         imageView.setImageURI(it.toUri())
     }
 }
 
 @BindingAdapter("bindText")
-fun bindText(textView: TextView,text:String?){
-    if(text != "" && text != null){
-        textView.text=text
+fun bindText(textView: TextView, text: String?) {
+    if (text != "" && text != null) {
+        textView.text = text
     }
 }
 
 @BindingAdapter("enableMail")
-fun enableMail(layout: ConstraintLayout,mail:String?){
-    Log.i("hello","enable mail called${mail.isNullOrBlank()}")
-    if(mail.isNullOrBlank()){
-        Log.i("hello","enable mail called${mail.isNullOrBlank()}")
-        layout.setVisibility(View.GONE)
+fun enableMail(layout: ConstraintLayout, mail: String?) {
+    Log.i("hello", "enable mail called${mail.isNullOrBlank()}")
+    if (mail.isNullOrBlank()) {
+        Log.i("hello", "enable mail called${mail.isNullOrBlank()}")
+        layout.visibility = View.GONE
+    } else {
+        layout.visibility = View.VISIBLE
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.zcontacts.addcontact.AddContactViewModel" />
@@ -28,11 +29,11 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/contact_icon"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_perm_contact_calendar_24"
                 app:bindImg="@{viewModel.imageUrl}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_perm_contact_calendar_24" />
 
             <EditText
                 android:id="@+id/firstName"
@@ -45,9 +46,9 @@
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="@string/first_name"
-                app:bindText="@{viewModel.selectedData.contactFirstName}"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
+                app:bindText="@{viewModel.selectedData.contactFirstName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,10 +64,10 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:ems="10"
-                app:bindText="@{viewModel.selectedData.contactLastName}"
                 android:hint="@string/last_name_optional"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
+                app:bindText="@{viewModel.selectedData.contactLastName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/firstName" />
@@ -80,10 +81,10 @@
                 android:layout_marginTop="30dp"
                 android:autofillHints=""
                 android:ems="10"
-                app:bindText="@{viewModel.selectedData.contactCountryCode}"
                 android:hint="@string/phone_number_code"
                 android:inputType="text"
                 android:text="@string/_91"
+                app:bindText="@{viewModel.selectedData.contactCountryCode}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lastName" />
 
@@ -97,10 +98,10 @@
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="@string/mobile_number"
-                app:bindNumber="@{viewModel.selectedData.contactNumber}"
                 android:importantForAutofill="no"
                 android:inputType="number|phone"
                 android:shadowRadius="10"
+                app:bindNumber="@{viewModel.selectedData.contactNumber}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/countryCode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.541"
@@ -116,10 +117,10 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:ems="10"
-                app:bindText="@{viewModel.selectedData.contactMail}"
                 android:hint="@string/email_id_optional"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
+                app:bindText="@{viewModel.selectedData.contactMail}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />

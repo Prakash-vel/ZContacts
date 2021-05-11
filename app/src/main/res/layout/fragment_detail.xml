@@ -30,7 +30,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/personImage"
@@ -90,7 +90,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginTop="10dp"
-                        android:text="Mobile"
+                        android:text="@string/mobile"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -105,20 +105,20 @@
                         android:layout_marginEnd="30dp"
                         android:layout_marginRight="30dp"
                         android:layout_marginBottom="10dp"
-                        android:text="TextView"
                         android:textSize="24sp"
                         app:bindNumber="@{viewModel.selectedData.contactNumber}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageButton7"
+                        app:layout_constraintEnd_toStartOf="@+id/callButton"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-                    <ImageButton
-                        android:id="@+id/imageButton7"
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/callButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:contentDescription="@string/call_action_image"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -157,11 +157,10 @@
                         android:layout_marginRight="30dp"
                         android:layout_marginBottom="10dp"
                         android:singleLine="true"
-                        android:text="TextView"
                         android:textSize="16sp"
                         app:bindText="@{viewModel.selectedData.contactMail}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageButton8"
+                        app:layout_constraintEnd_toStartOf="@+id/MailButton"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -172,17 +171,18 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginTop="10dp"
-                        android:text="Mail"
+                        android:text="@string/mail"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
-                        android:id="@+id/imageButton8"
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/MailButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:contentDescription="@string/mail_action_image"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -195,38 +195,41 @@
 
         </ScrollView>
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginBottom="16dp"
+            android:contentDescription="@string/edit_action_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_baseline_edit_24" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:baselineAlignBottom="false"
+            android:contentDescription="@string/delete_action_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/shareButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/editButton"
             app:srcCompat="@drawable/ic_baseline_delete_24" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/shareButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="64dp"
             android:layout_marginRight="64dp"
             android:layout_marginBottom="16dp"
+            android:contentDescription="@string/share_action_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

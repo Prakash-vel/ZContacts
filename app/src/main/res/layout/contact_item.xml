@@ -13,9 +13,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_edge"
+        android:layout_margin="4dp"
 
-        android:layout_margin="4dp">
+        android:background="@drawable/custom_edge">
 
         <TextView
             android:id="@+id/personName"
@@ -58,14 +58,14 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/contact_image"
+            android:scaleType="fitCenter"
+            app:bindImg="@{contactData.contactImage}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars"
-            app:bindImg="@{contactData.contactImage}"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"/>
+            tools:srcCompat="@tools:sample/avatars" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
