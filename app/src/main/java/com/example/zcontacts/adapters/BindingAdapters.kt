@@ -18,7 +18,12 @@ fun bindName(textView: TextView, data: ContactData?) {
 
 @BindingAdapter("bindNumber")
 fun bindNum(textView: TextView, text: Long) {
-    textView.text = text.toString()
+    if(text==0L){
+        textView.text=""
+    }else{
+        textView.text = text.toString()
+    }
+
 }
 
 @BindingAdapter("bindImg")

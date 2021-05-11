@@ -1,5 +1,7 @@
 package com.example.zcontacts.detailview
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +47,20 @@ class DetailFragment : Fragment() {
             viewModel.deleteContact(selectedId)
             this.findNavController()
                 .navigate(DetailFragmentDirections.actionDetailFragmentToMasterFragment())
+        }
+        binding.callButton.setOnClickListener {
+            val callIntent = Intent(Intent.ACTION_CALL)
+            callIntent.data = Uri.parse("tel:" + 8802177690)
+
+            startActivity(callIntent)
+        }
+        binding.shareButton.setOnClickListener {
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.type = "text/contact"
+            val shareName = "Name:${viewModel.selectedData.value?.contactFirstName}${viewModel.selectedData.value?.contactLastName} \n Number:${viewModel.selectedData.value?.contactNumber}"
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Mobile contact")
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareName)
+            startActivity(Intent.createChooser(sharingIntent, "Share via"))
         }
         return binding.root
     }
