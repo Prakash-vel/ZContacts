@@ -82,7 +82,7 @@
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/phone_number_code"
-                android:inputType="text"
+                android:inputType="number|phone"
                 android:text="@string/_91"
                 app:bindText="@{viewModel.selectedData.contactCountryCode}"
                 app:layout_constraintStart_toStartOf="parent"

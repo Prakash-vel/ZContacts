@@ -23,7 +23,9 @@
             app:argType="long" />
         <action
             android:id="@+id/action_detailFragment_to_masterFragment"
-            app:destination="@id/masterFragment" />
+            app:destination="@id/masterFragment"
+            app:popUpTo="@id/masterFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_detailFragment_to_addContactFragment"
             app:destination="@id/addContactFragment" />
@@ -37,10 +39,14 @@
             app:argType="long" />
         <action
             android:id="@+id/action_addContactFragment_to_masterFragment"
-            app:destination="@id/masterFragment" />
+            app:destination="@id/masterFragment"
+            app:popUpTo="@id/masterFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_addContactFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:popUpTo="@id/detailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"

@@ -1,5 +1,8 @@
 package com.example.zcontacts.detailview
 
+import android.R
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -44,15 +47,38 @@ class DetailFragment : Fragment() {
             )
         }
         binding.deleteButton.setOnClickListener {
-            viewModel.deleteContact(selectedId)
-            this.findNavController()
-                .navigate(DetailFragmentDirections.actionDetailFragmentToMasterFragment())
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this.context)
+            builder.setCancelable(true)
+            builder.setTitle("Confirm Delete..")
+            builder.setMessage("Are you sure you really want to delete this contact?")
+            builder.setPositiveButton(R.string.cancel,
+                { dialog, which -> })
+            builder.setNegativeButton(
+                "Confirm"
+            ) { dialog, which ->
+                viewModel.deleteContact(selectedId)
+                this.findNavController()
+                    .navigate(DetailFragmentDirections.actionDetailFragmentToMasterFragment())
+            }
+
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+
         }
         binding.callButton.setOnClickListener {
             val callIntent = Intent(Intent.ACTION_CALL)
-            callIntent.data = Uri.parse("tel:" + 8802177690)
-
+            callIntent.data = Uri.parse("tel:" + viewModel.selectedData.value?.contactCountryCode+viewModel.selectedData.value?.contactNumber)
             startActivity(callIntent)
+        }
+        binding.MailButton.setOnClickListener {
+
+            val mailIntent=Intent(Intent.ACTION_SENDTO)
+            mailIntent.type="text/plain"
+            mailIntent.data=Uri.parse("mailto:prakash.vel@zohocorp.com")
+            mailIntent.putExtra(Intent.EXTRA_EMAIL,"prakash.vel@zohocorp.com")
+            mailIntent.putExtra(Intent.EXTRA_SUBJECT,"Your Subject")
+            mailIntent.putExtra(Intent.EXTRA_TEXT,"Your Email Body")
+            startActivity(Intent.createChooser(mailIntent,"Choose an Email Client"))
         }
         binding.shareButton.setOnClickListener {
             val sharingIntent = Intent(Intent.ACTION_SEND)
@@ -62,6 +88,7 @@ class DetailFragment : Fragment() {
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareName)
             startActivity(Intent.createChooser(sharingIntent, "Share via"))
         }
+
         return binding.root
     }
 

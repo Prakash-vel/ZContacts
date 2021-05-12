@@ -12,10 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.zcontacts.R
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentAddContactBinding
@@ -53,12 +55,6 @@ class AddContactFragment : Fragment() {
         })
         binding.cancelButton.setOnClickListener {
             navigate(selectedId)
-//            val fm: FragmentManager = requireActivity().supportFragmentManager
-//            if (fm.getBackStackEntryCount() > 0) {
-//                fm.popBackStack();
-//            }
-//            fm.beginTransaction().add(R.id.contentPanel, fm)
-//                .addToBackStack(null).commit();
         }
         binding.imageButton.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -80,6 +76,7 @@ class AddContactFragment : Fragment() {
             }
 
         }
+
         binding.addButton.setOnClickListener {
 
             if (binding.firstName.text.isEmpty() || binding.phoneNumber.text.isEmpty()) {
@@ -93,11 +90,27 @@ class AddContactFragment : Fragment() {
                 contactData.contactFirstName = binding.firstName.text.toString()
                 contactData.contactLastName = binding.lastName.text.toString()
                 contactData.contactCountryCode = binding.countryCode.text.toString()
-                contactData.contactNumber = binding.phoneNumber.text.toString().toLong()
-                contactData.contactMail = binding.editTextTextEmailAddress.text.toString()
+
                 contactData.contactImage = viewModel.imageUrl.value.toString()
-                viewModel.addContact(contactData, selectedId)
-                navigate(selectedId)
+                contactData.contactNumber = binding.phoneNumber.text.toString().toLong()
+                if(!binding.editTextTextEmailAddress.text.toString().isNullOrBlank() ){
+                    if(android.util.Patterns.EMAIL_ADDRESS.matcher(binding.editTextTextEmailAddress.text.toString()).matches()){
+                        contactData.contactMail=binding.editTextTextEmailAddress.text.toString()
+                        viewModel.addContact(contactData, selectedId)
+                        navigate(selectedId)
+                    }else{
+                        Toast.makeText(this.context,"Invalid Mail ",Toast.LENGTH_SHORT).show()
+
+                    }
+
+                }
+                else{
+                    contactData.contactMail=binding.editTextTextEmailAddress.text.toString()
+                    viewModel.addContact(contactData, selectedId)
+                    navigate(selectedId)
+                }
+
+
             }
 
 
@@ -131,6 +144,7 @@ class AddContactFragment : Fragment() {
                 )
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
