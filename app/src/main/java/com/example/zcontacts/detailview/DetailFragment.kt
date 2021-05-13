@@ -4,7 +4,6 @@ import android.Manifest
 import android.R
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -18,7 +17,6 @@ import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.zcontacts.addcontact.AddContactFragment
 import com.example.zcontacts.addcontact.AddContactFragmentArgs
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentDetailBinding
@@ -26,8 +24,9 @@ import com.example.zcontacts.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
 
-    private val permissionCodePhone=1
+    private val permissionCodePhone = 1
     private lateinit var viewModel: DetailViewModel
+
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,18 +95,19 @@ class DetailFragment : Fragment() {
         }
         binding.MailButton.setOnClickListener {
 
-            val mailIntent=Intent(Intent.ACTION_SENDTO)
-            mailIntent.type="text/plain"
-            mailIntent.data=Uri.parse("mailto:prakash.vel@zohocorp.com")
-            mailIntent.putExtra(Intent.EXTRA_EMAIL,"prakash.vel@zohocorp.com")
-            mailIntent.putExtra(Intent.EXTRA_SUBJECT,"Your Subject")
-            mailIntent.putExtra(Intent.EXTRA_TEXT,"Your Email Body")
-            startActivity(Intent.createChooser(mailIntent,"Choose an Email Client"))
+            val mailIntent = Intent(Intent.ACTION_SENDTO)
+            mailIntent.type = "text/plain"
+            mailIntent.data = Uri.parse("mailto:prakash.vel@zohocorp.com")
+            mailIntent.putExtra(Intent.EXTRA_EMAIL, "prakash.vel@zohocorp.com")
+            mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your Subject")
+            mailIntent.putExtra(Intent.EXTRA_TEXT, "Your Email Body")
+            startActivity(Intent.createChooser(mailIntent, "Choose an Email Client"))
         }
         binding.shareButton.setOnClickListener {
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "text/contact"
-            val shareName = "Name:${viewModel.selectedData.value?.contactFirstName}${viewModel.selectedData.value?.contactLastName} \n Number:${viewModel.selectedData.value?.contactNumber}"
+            val shareName =
+                "Name:${viewModel.selectedData.value?.contactFirstName}${viewModel.selectedData.value?.contactLastName} \n Number:${viewModel.selectedData.value?.contactNumber}"
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Mobile contact")
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareName)
             startActivity(Intent.createChooser(sharingIntent, "Share via"))
@@ -118,7 +118,8 @@ class DetailFragment : Fragment() {
 
     private fun makePhoneCall() {
         val callIntent = Intent(Intent.ACTION_CALL)
-        callIntent.data = Uri.parse("tel:" + viewModel.selectedData.value?.contactCountryCode+viewModel.selectedData.value?.contactNumber)
+        callIntent.data =
+            Uri.parse("tel:" + viewModel.selectedData.value?.contactCountryCode + viewModel.selectedData.value?.contactNumber)
         startActivity(callIntent)
     }
 

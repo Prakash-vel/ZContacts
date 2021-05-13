@@ -3,7 +3,6 @@ package com.example.zcontacts.addcontact
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.zcontacts.Repository
 import com.example.zcontacts.database.ContactData
@@ -16,12 +15,13 @@ class AddContactViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
     val selectedData: LiveData<ContactData>
         get() = repository.selectedData
 
-    val newData=MutableLiveData<ContactData>()
+    val newData = MutableLiveData<ContactData>()
 
-    init{
-        newData.value= ContactData()
+    init {
+        newData.value = ContactData()
     }
-    val imageUrl=MutableLiveData<String>()
+
+    val imageUrl = MutableLiveData<String>()
 //    val imageUrl = Transformations.map(newData){
 //        if(it.contactImage.isBlank()){
 //            if(!it.contactLastName.isBlank() || !it.contactFirstName.isBlank()){

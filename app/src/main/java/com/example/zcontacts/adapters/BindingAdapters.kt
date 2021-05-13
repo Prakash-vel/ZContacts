@@ -31,23 +31,25 @@ fun bindNum(textView: TextView, text: Long) {
 
 @BindingAdapter("bindImg")
 fun bindImage(imageView: ImageView, data: ContactData?) {
-    Log.i("hello","image$data")
+    Log.i("hello", "image$data")
     if (!data?.contactImage.isNullOrBlank()) {
         imageView.setImageURI(data?.contactImage?.toUri())
-    } else if(!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()){
+    } else if (!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()) {
         val drawable: TextDrawable = TextDrawable.builder()
             .buildRect(
-                "${if(data?.contactFirstName?.first() != null) data?.contactFirstName?.first() else ' '}${if(data?.contactLastName?.first() != null) data?.contactLastName?.first() else ' '}", Color.RED
+                "${if (data?.contactFirstName?.first() != null) data.contactFirstName.first() else ' '}${if (data?.contactLastName?.first() != null) data.contactLastName.first() else ' '}",
+                Color.RED
             )
         imageView.setImageDrawable(drawable)
 
     }
 }
+
 @BindingAdapter("bindImage")
-fun bindImg(imageView: ImageView, uri:String?) {
-   Log.i("hello","image$uri")
+fun bindImg(imageView: ImageView, uri: String?) {
+    Log.i("hello", "image$uri")
 //
-    if(!uri.isNullOrBlank()){
+    if (!uri.isNullOrBlank()) {
         imageView.setImageURI(uri.toUri())
     }
 

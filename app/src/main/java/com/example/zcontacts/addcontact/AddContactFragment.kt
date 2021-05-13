@@ -186,7 +186,7 @@ class AddContactFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == imgPickCode) {
             viewModel.newData.value?.contactImage= data?.data.toString()
-            viewModel.imageUrl.value=data?.data.toString()
+            viewModel.imageUrl.value = data?.data.toString()
             Log.i("hello", "data ${viewModel.newData.value}imageUri${data?.data}")
             binding.executePendingBindings()
         }
