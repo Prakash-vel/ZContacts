@@ -1,6 +1,5 @@
 package com.example.zcontacts.adapters
 
-import android.R
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -22,34 +21,37 @@ fun bindName(textView: TextView, data: ContactData?) {
 
 @BindingAdapter("bindNumber")
 fun bindNum(textView: TextView, text: Long) {
-    if(text==0L){
-        textView.text=""
-    }else{
+    if (text == 0L) {
+        textView.text = ""
+    } else {
         textView.text = text.toString()
     }
 
 }
 
 @BindingAdapter("bindImg")
-fun bindImage(imageView: ImageView, uri:String?) {
-    uri?.let{
-        imageView.setImageURI(uri.toUri())
-    }
-    if(uri.isNullOrBlank() || uri.isNullOrEmpty()){
+fun bindImage(imageView: ImageView, data: ContactData?) {
+    Log.i("hello","image$data")
+    if (!data?.contactImage.isNullOrBlank()) {
+        imageView.setImageURI(data?.contactImage?.toUri())
+    } else if(!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()){
         val drawable: TextDrawable = TextDrawable.builder()
             .buildRect(
-                "a", Color.RED)
+                "${if(data?.contactFirstName?.first() != null) data?.contactFirstName?.first() else ' '}${if(data?.contactLastName?.first() != null) data?.contactLastName?.first() else ' '}", Color.RED
+            )
         imageView.setImageDrawable(drawable)
+
     }
-//    if(contactData?.contactImage.isNullOrBlank()) {
+}
+@BindingAdapter("bindImage")
+fun bindImg(imageView: ImageView, uri:String?) {
+   Log.i("hello","image$uri")
 //
-//        imageView.setImageURI(contactData?.contactImage?.toUri())
-//    }else{
-//        val drawable: TextDrawable = TextDrawable.builder()
-//            .buildRect(
-//                "${contactData?.contactFirstName?.first().toString()}${contactData?.contactLastName?.first().toString()}", Color.RED)
-//        imageView.setImageDrawable(drawable)
-//    }
+    if(!uri.isNullOrBlank()){
+        imageView.setImageURI(uri.toUri())
+    }
+
+
 }
 
 @BindingAdapter("bindText")

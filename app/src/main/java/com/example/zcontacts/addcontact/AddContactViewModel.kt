@@ -3,6 +3,7 @@ package com.example.zcontacts.addcontact
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.zcontacts.Repository
 import com.example.zcontacts.database.ContactData
@@ -15,13 +16,31 @@ class AddContactViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
     val selectedData: LiveData<ContactData>
         get() = repository.selectedData
 
-    val imageUrl = MutableLiveData<String>()
+    val newData=MutableLiveData<ContactData>()
 
-    //    val imageUrl=Transformations.map(imageURlString){
-//        if()
+    init{
+        newData.value= ContactData()
+    }
+    val imageUrl=MutableLiveData<String>()
+//    val imageUrl = Transformations.map(newData){
+//        if(it.contactImage.isBlank()){
+//            if(!it.contactLastName.isBlank() || !it.contactFirstName.isBlank()){
+//                if(it.contactLastName.isBlank() ){
+//                    "${it.contactFirstName.first()}"
+//                }else{
+//                    "${it.contactFirstName.first()}${it.contactLastName.first()}"
+//                }
+//            }else{
+//                null
+//            }
+//        }else{
+//            it.contactImage
+//        }
 //    }
+
+
     fun addContact(data: ContactData, selectedId: Long) {
-        Log.i("hello", "add contact called in viewmodel selected id$selectedId and data $data")
+        Log.i("hello", "add contact called in viewModel selected id$selectedId and data $data")
         if (selectedId == 0L) {
             repository.addContact(data)
             Log.i("hello", "i am adding contact data")
@@ -34,8 +53,8 @@ class AddContactViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
 
     fun getData(id: Long) {
         repository.getContactByID(id)
-        Log.i("hello", "get data $id and selecteddata${selectedData.value}")
-        imageUrl.value = selectedData.value?.contactImage
+        Log.i("hello", "get data $id and selectedData${selectedData.value}")
+
     }
 
 

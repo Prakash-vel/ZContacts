@@ -2,22 +2,24 @@ package com.example.zcontacts.addcontact
 
 import android.Manifest
 import android.annotation.SuppressLint
+
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.zcontacts.R
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentAddContactBinding
@@ -25,15 +27,16 @@ import com.example.zcontacts.databinding.FragmentAddContactBinding
 
 class AddContactFragment : Fragment() {
     private lateinit var viewModel: AddContactViewModel
-
+    private lateinit var binding: FragmentAddContactBinding
     //    private var url:String?=null
+
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = FragmentAddContactBinding.inflate(layoutInflater, container, false)
+        binding = FragmentAddContactBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
         val application = requireNotNull(this.activity).application
         val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
@@ -50,7 +53,7 @@ class AddContactFragment : Fragment() {
         }
         viewModel.selectedData.observe(this.viewLifecycleOwner, {
             if (it.contactImage != null && it.contactImage != "") {
-                viewModel.imageUrl.value = it.contactImage
+                viewModel.newData.value=it
             }
         })
         binding.cancelButton.setOnClickListener {
@@ -91,7 +94,11 @@ class AddContactFragment : Fragment() {
                 contactData.contactLastName = binding.lastName.text.toString()
                 contactData.contactCountryCode = binding.countryCode.text.toString()
 
-                contactData.contactImage = viewModel.imageUrl.value.toString()
+                if(viewModel.newData.value?.contactImage == null){
+                    contactData.contactImage = ""
+                }else{
+                    contactData.contactImage=viewModel.newData.value?.contactImage.toString()
+                }
                 contactData.contactNumber = binding.phoneNumber.text.toString().toLong()
                 if(!binding.editTextTextEmailAddress.text.toString().isNullOrBlank() ){
                     if(android.util.Patterns.EMAIL_ADDRESS.matcher(binding.editTextTextEmailAddress.text.toString()).matches()){
@@ -115,6 +122,21 @@ class AddContactFragment : Fragment() {
 
 
         }
+        binding.scrollView.setOnTouchListener { v, event ->
+            if (event != null && event.action == MotionEvent.ACTION_MOVE) {
+                val inputMethodManager: InputMethodManager =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val isKeyboardUp: Boolean = inputMethodManager.isAcceptingText()
+                if (isKeyboardUp) {
+                    inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+                }
+            }
+            false
+        }
+        viewModel.newData.observe(this.viewLifecycleOwner,{
+            Log.i("hello","newdata$it")
+            binding.executePendingBindings()
+        })
 
 
         return binding.root
@@ -152,7 +174,7 @@ class AddContactFragment : Fragment() {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            permissionCode -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 pickFromGallery()
             } else {
                 Toast.makeText(this.context, "Permission Denied ", Toast.LENGTH_SHORT).show()
@@ -163,10 +185,10 @@ class AddContactFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == imgPickCode) {
-            //imageButton.setImageURI(data?.data)
-            viewModel.imageUrl.value = data?.data.toString()
-//            url= data?.data.toString()
-            Log.i("hello", "imageUri${data?.data}")
+            viewModel.newData.value?.contactImage= data?.data.toString()
+            viewModel.imageUrl.value=data?.data.toString()
+            Log.i("hello", "data ${viewModel.newData.value}imageUri${data?.data}")
+            binding.executePendingBindings()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
