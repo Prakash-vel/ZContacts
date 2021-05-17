@@ -58,18 +58,28 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="34dp"
+            app:bind="@{contactData}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <ImageView
 
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:srcCompat="@tools:sample/avatars"
                 android:adjustViewBounds="true"
+                android:enabled="false"
                 android:contentDescription="@string/contact_image"
-                android:scaleType="centerCrop"
-                app:bindImg="@{contactData}"/>
+                android:scaleType="centerCrop" />
+            <TextView
+                android:id="@+id/imageText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="AB"
+                android:textAlignment="center"
+                android:textSize="32sp" />
         </androidx.cardview.widget.CardView>
 
 

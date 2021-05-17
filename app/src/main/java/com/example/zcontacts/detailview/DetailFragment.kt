@@ -97,8 +97,8 @@ class DetailFragment : Fragment() {
 
             val mailIntent = Intent(Intent.ACTION_SENDTO)
             mailIntent.type = "text/plain"
-            mailIntent.data = Uri.parse("mailto:prakash.vel@zohocorp.com")
-            mailIntent.putExtra(Intent.EXTRA_EMAIL, "prakash.vel@zohocorp.com")
+            mailIntent.data = Uri.parse("mailto:${viewModel.selectedData.value?.contactMail}")
+            mailIntent.putExtra(Intent.EXTRA_EMAIL, viewModel.selectedData.value?.contactMail)
             mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your Subject")
             mailIntent.putExtra(Intent.EXTRA_TEXT, "Your Email Body")
             startActivity(Intent.createChooser(mailIntent, "Choose an Email Client"))

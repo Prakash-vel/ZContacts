@@ -52,8 +52,10 @@ class AddContactFragment : Fragment() {
             viewModel.getData(selectedId)
         }
         viewModel.selectedData.observe(this.viewLifecycleOwner, {
-            if (it.contactImage != null && it.contactImage != "") {
+            if (it.contactImage != "") {
                 viewModel.newData.value=it
+                viewModel.imageUrl.value=it.contactImage
+
             }
         })
         binding.cancelButton.setOnClickListener {
@@ -122,17 +124,17 @@ class AddContactFragment : Fragment() {
 
 
         }
-        binding.scrollView.setOnTouchListener { v, event ->
-            if (event != null && event.action == MotionEvent.ACTION_MOVE) {
-                val inputMethodManager: InputMethodManager =
-                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                val isKeyboardUp: Boolean = inputMethodManager.isAcceptingText()
-                if (isKeyboardUp) {
-                    inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
-                }
-            }
-            false
-        }
+//        binding.scrollView.setOnTouchListener { v, event ->
+//            if (event != null && event.action == MotionEvent.ACTION_MOVE) {
+//                val inputMethodManager: InputMethodManager =
+//                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                val isKeyboardUp: Boolean = inputMethodManager.isAcceptingText()
+//                if (isKeyboardUp) {
+//                    inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+//                }
+//            }
+//            false
+//        }
         viewModel.newData.observe(this.viewLifecycleOwner,{
             Log.i("hello","newdata$it")
             binding.executePendingBindings()
