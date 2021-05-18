@@ -61,15 +61,13 @@ dependencies {
 //    //if you want to use Picasso for loading images
 //    compile 'agency.tango.android:avatar-view-picasso:4.11.0'
 
-    compile 'com.github.jrvansuita:PickImage:+'
+    //compile 'com.github.jrvansuita:PickImage:+'
 
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     kapt 'androidx.room:room-compiler:2.3.0'
-    //for image with letters
-    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
 
 

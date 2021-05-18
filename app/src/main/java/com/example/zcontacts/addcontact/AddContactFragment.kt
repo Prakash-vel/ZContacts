@@ -6,8 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -26,13 +25,16 @@ import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentAddContactBinding
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AddContactFragment : Fragment() {
-    private val FILE_NAME="Photo.jpg"
+
     private lateinit var viewModel: AddContactViewModel
     private lateinit var binding: FragmentAddContactBinding
-    //    private var url:String?=null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,11 +72,11 @@ class AddContactFragment : Fragment() {
             val options = arrayOf("Camera", "Gallery", "Cancel")
             builder.setTitle("Choose your picture!")
             builder.setItems(options) { dialog, item ->
-                if (options[item].equals(options[0])) {
+                if (options[item] == options[0]) {
                     pickFromCamera()
-                } else if (options[item].equals(options[1])) {
+                } else if (options[item] == options[1]) {
                     takeFromGallery()
-                } else if (options[item].equals(options[2])) {
+                } else if (options[item] == options[2]) {
                     dialog.dismiss()
                 }
             }
@@ -138,7 +140,6 @@ class AddContactFragment : Fragment() {
 //            false
 //        }
         viewModel.newData.observe(this.viewLifecycleOwner, {
-            Log.i("hello", "newdata$it")
             binding.executePendingBindings()
         })
 
@@ -193,20 +194,35 @@ class AddContactFragment : Fragment() {
         }
 
     }
-    private lateinit var photoFile: File
+
 
     private fun pickFromCamera() {
 
         try {
-            val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            photoFile=getPhotoFile(FILE_NAME)
-          //  takePicture.putExtra(MediaStore.EXTRA_OUTPUT,photoFile)
-            val fileProvider=FileProvider.getUriForFile(this.requireContext(),"com.example.zcontacts.fileprovider",photoFile)
-            takePicture.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider)
-            if (this.context?.let { takePicture.resolveActivity(it.packageManager) } != null) {
-                startActivityForResult(takePicture, imgPickCode)
-            } else {
-                Toast.makeText(this.context, "Unable to open camera ", Toast.LENGTH_SHORT).show()
+
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                this.context?.let { it ->
+                    takePictureIntent.resolveActivity(it.packageManager)?.also {
+                        // Create the File where the photo should go
+                        val photoFile: File? = try {
+                            createImageFile()
+                        } catch (ex: IOException) {
+                            // Error occurred while creating the File
+                            null
+                        }
+                        // Continue only if the File was successfully created
+                        photoFile?.also {
+                            val photoURI: Uri = FileProvider.getUriForFile(
+                                this.requireContext(),
+                                "com.example.zcontacts.fileprovider",
+                                it
+                            )
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takePictureIntent, imgPickCodeCamera)
+                        }
+                    }
+                }
             }
 
 
@@ -217,16 +233,23 @@ class AddContactFragment : Fragment() {
 
     }
 
-    private fun getPhotoFile(fileName: String): File {
-        val storageDirectory=activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(fileName,".jpg",storageDirectory)
+    private lateinit var currentPhotoPath: String
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
     }
 
-//    private fun createImageFile(): File? {
-//
-//        val fileName="My Pictures"
-//        val storageDir=Environment.getStorageDirectory()
-//    }
 
     private fun pickFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -238,6 +261,7 @@ class AddContactFragment : Fragment() {
         private const val imgPickCode = 1000
         private const val permissionCode = 1001
         private const val permissionCodeCamera = 1002
+        private const val imgPickCodeCamera = 1003
     }
 
     private fun navigate(selectedId: Long) {
@@ -277,19 +301,21 @@ class AddContactFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == imgPickCode) {
-          //  val imageBitmap = data?.extras?.get("data") as Bitmap
-              //binding.imageButton.setImageBitmap(imageBitmap)
-            val takenImage=BitmapFactory.decodeFile(photoFile.absolutePath)
-            binding.imageButton.setImageBitmap(takenImage)
+
             viewModel.newData.value?.contactImage = data?.data.toString()
-            // viewModel.imageUrl.value = data?.data.toString()
+            viewModel.imageUrl.value = data?.data.toString()
             Log.i("hello", "data ${viewModel.newData.value}imageUri${data?.data}")
+            binding.executePendingBindings()
+        } else if (resultCode == Activity.RESULT_OK && requestCode == imgPickCodeCamera) {
+            val f = File(currentPhotoPath)
+            val uri = Uri.parse(f.toString())
+            viewModel.newData.value?.contactImage = uri.toString()
+            viewModel.imageUrl.value = uri.toString()
+            Log.i("hello", "data ${viewModel.newData.value}imageUri${uri}")
             binding.executePendingBindings()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
-    lateinit var currentPhotoPath: String
 
 
 }
