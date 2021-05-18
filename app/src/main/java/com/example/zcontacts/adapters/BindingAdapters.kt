@@ -1,7 +1,6 @@
 package com.example.zcontacts.adapters
 
 import android.graphics.Color
-import android.opengl.Visibility
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -59,41 +58,42 @@ fun bindImageText(textView: TextView, data: ContactData?) {
 //
 //    }
 }
+
 fun randomNumber(): String {
-    val red = Random().nextInt(180)+15
-    val blue = Random().nextInt(180)+15
-    val green = Random().nextInt(180)+15
+    val red = Random().nextInt(180) + 15
+    val blue = Random().nextInt(180) + 15
+    val green = Random().nextInt(180) + 15
     return "#${Integer.toHexString(red)}${Integer.toHexString(green)}${Integer.toHexString(blue)}"
 
 }
 
 @BindingAdapter("bind")
-fun bind(cardView: CardView,data: ContactData?){
-    Log.i("hello","child0${data}")
-    val imageView=cardView.getChildAt(0) as ImageView
-    val textView=cardView.getChildAt(1) as TextView
+fun bind(cardView: CardView, data: ContactData?) {
+    Log.i("hello", "child0${data}")
+    val imageView = cardView.getChildAt(0) as ImageView
+    val textView = cardView.getChildAt(1) as TextView
     if (!data?.contactImage.isNullOrBlank()) {
 
-        imageView.isEnabled=true
+        imageView.isEnabled = true
         imageView.setImageURI(data?.contactImage?.toUri())
-        textView.visibility=View.GONE
+        textView.visibility = View.GONE
     } else {
 
         if (!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()) {
-            Log.i("hello","if called")
+            Log.i("hello", "if called")
             textView.isEnabled = true
             textView.setBackgroundColor(Color.parseColor(randomNumber()))
             textView.text = "${data?.contactFirstName?.first()}${data?.contactLastName?.first()}"
-            imageView.isEnabled=false
-        } else if (!data?.contactFirstName.isNullOrBlank()){
-            Log.i("hello","else if called")
+            imageView.isEnabled = false
+        } else if (!data?.contactFirstName.isNullOrBlank()) {
+            Log.i("hello", "else if called")
             textView.isEnabled = true
             textView.setBackgroundColor(Color.parseColor(randomNumber()))
             textView.text = "${data?.contactFirstName?.first()}"
-            imageView.isEnabled=false
-        }else{
-            Log.i("hello","else called")
-            textView.text=""
+            imageView.isEnabled = false
+        } else {
+            Log.i("hello", "else called")
+            textView.text = ""
         }
 
     }
