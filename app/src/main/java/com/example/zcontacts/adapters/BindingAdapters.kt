@@ -1,6 +1,7 @@
 package com.example.zcontacts.adapters
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -75,7 +76,7 @@ fun bind(cardView: CardView,data: ContactData?){
 
         imageView.isEnabled=true
         imageView.setImageURI(data?.contactImage?.toUri())
-        cardView.removeView(textView)
+        textView.visibility=View.GONE
     } else {
 
         if (!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()) {

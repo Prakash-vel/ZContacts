@@ -2,20 +2,22 @@ package com.example.zcontacts.addcontact
 
 import android.Manifest
 import android.annotation.SuppressLint
-
 import android.app.Activity
-import android.content.Context
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -23,14 +25,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentAddContactBinding
+import java.io.File
 
 
 class AddContactFragment : Fragment() {
+    private val FILE_NAME="Photo.jpg"
     private lateinit var viewModel: AddContactViewModel
     private lateinit var binding: FragmentAddContactBinding
     //    private var url:String?=null
 
-    @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,8 +56,8 @@ class AddContactFragment : Fragment() {
         }
         viewModel.selectedData.observe(this.viewLifecycleOwner, {
             if (it.contactImage != "") {
-                viewModel.newData.value=it
-                viewModel.imageUrl.value=it.contactImage
+                viewModel.newData.value = it
+                viewModel.imageUrl.value = it.contactImage
 
             }
         })
@@ -62,23 +65,21 @@ class AddContactFragment : Fragment() {
             navigate(selectedId)
         }
         binding.imageButton.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(
-                        this.requireContext(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ) == PackageManager.PERMISSION_DENIED
-                ) {
-                    //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    requestPermissions(permissions, permissionCode)
-
-                } else {
-                    //permission already granted
-                    pickFromGallery()
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this.context)
+            builder.setCancelable(true)
+            val options = arrayOf("Camera", "Gallery", "Cancel")
+            builder.setTitle("Choose your picture!")
+            builder.setItems(options) { dialog, item ->
+                if (options[item].equals(options[0])) {
+                    pickFromCamera()
+                } else if (options[item].equals(options[1])) {
+                    takeFromGallery()
+                } else if (options[item].equals(options[2])) {
+                    dialog.dismiss()
                 }
-            } else {
-                pickFromGallery()
             }
+            builder.show()
+
 
         }
 
@@ -96,25 +97,26 @@ class AddContactFragment : Fragment() {
                 contactData.contactLastName = binding.lastName.text.toString()
                 contactData.contactCountryCode = binding.countryCode.text.toString()
 
-                if(viewModel.newData.value?.contactImage == null){
+                if (viewModel.newData.value?.contactImage == null) {
                     contactData.contactImage = ""
-                }else{
-                    contactData.contactImage=viewModel.newData.value?.contactImage.toString()
+                } else {
+                    contactData.contactImage = viewModel.newData.value?.contactImage.toString()
                 }
                 contactData.contactNumber = binding.phoneNumber.text.toString().toLong()
-                if(!binding.editTextTextEmailAddress.text.toString().isNullOrBlank() ){
-                    if(android.util.Patterns.EMAIL_ADDRESS.matcher(binding.editTextTextEmailAddress.text.toString()).matches()){
-                        contactData.contactMail=binding.editTextTextEmailAddress.text.toString()
+                if (!binding.editTextTextEmailAddress.text.toString().isNullOrBlank()) {
+                    if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.editTextTextEmailAddress.text.toString())
+                            .matches()
+                    ) {
+                        contactData.contactMail = binding.editTextTextEmailAddress.text.toString()
                         viewModel.addContact(contactData, selectedId)
                         navigate(selectedId)
-                    }else{
-                        Toast.makeText(this.context,"Invalid Mail ",Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this.context, "Invalid Mail ", Toast.LENGTH_SHORT).show()
 
                     }
 
-                }
-                else{
-                    contactData.contactMail=binding.editTextTextEmailAddress.text.toString()
+                } else {
+                    contactData.contactMail = binding.editTextTextEmailAddress.text.toString()
                     viewModel.addContact(contactData, selectedId)
                     navigate(selectedId)
                 }
@@ -135,14 +137,96 @@ class AddContactFragment : Fragment() {
 //            }
 //            false
 //        }
-        viewModel.newData.observe(this.viewLifecycleOwner,{
-            Log.i("hello","newdata$it")
+        viewModel.newData.observe(this.viewLifecycleOwner, {
+            Log.i("hello", "newdata$it")
             binding.executePendingBindings()
         })
 
 
         return binding.root
     }
+
+    @SuppressLint("WrongConstant")
+    private fun takeFromGallery() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                //permission denied
+                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                requestPermissions(permissions, permissionCode)
+
+            } else {
+                //permission already granted
+                pickFromGallery()
+            }
+        } else {
+            pickFromGallery()
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    private fun takeFromCamera() {
+//        val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        startActivityForResult(takePicture, 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ((checkSelfPermission(
+                    this.requireContext(), Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_DENIED) || (checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED)
+            ) {
+                //permission denied
+                val permissions =
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                requestPermissions(permissions, permissionCodeCamera)
+
+            } else {
+                //permission already granted
+                pickFromCamera()
+            }
+        } else {
+            pickFromCamera()
+        }
+
+    }
+    private lateinit var photoFile: File
+
+    private fun pickFromCamera() {
+
+        try {
+            val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            photoFile=getPhotoFile(FILE_NAME)
+          //  takePicture.putExtra(MediaStore.EXTRA_OUTPUT,photoFile)
+            val fileProvider=FileProvider.getUriForFile(this.requireContext(),"com.example.zcontacts.fileprovider",photoFile)
+            takePicture.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider)
+            if (this.context?.let { takePicture.resolveActivity(it.packageManager) } != null) {
+                startActivityForResult(takePicture, imgPickCode)
+            } else {
+                Toast.makeText(this.context, "Unable to open camera ", Toast.LENGTH_SHORT).show()
+            }
+
+
+        } catch (e: Exception) {
+            Log.i("hello", "catch called error $e")
+            takeFromCamera()
+        }
+
+    }
+
+    private fun getPhotoFile(fileName: String): File {
+        val storageDirectory=activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName,".jpg",storageDirectory)
+    }
+
+//    private fun createImageFile(): File? {
+//
+//        val fileName="My Pictures"
+//        val storageDir=Environment.getStorageDirectory()
+//    }
 
     private fun pickFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -153,6 +237,7 @@ class AddContactFragment : Fragment() {
     companion object {
         private const val imgPickCode = 1000
         private const val permissionCode = 1001
+        private const val permissionCodeCamera = 1002
     }
 
     private fun navigate(selectedId: Long) {
@@ -181,18 +266,30 @@ class AddContactFragment : Fragment() {
             } else {
                 Toast.makeText(this.context, "Permission Denied ", Toast.LENGTH_SHORT).show()
             }
+            permissionCodeCamera -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                pickFromCamera()
+            } else {
+                Toast.makeText(this.context, "Permission Denied ", Toast.LENGTH_SHORT).show()
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == imgPickCode) {
-            viewModel.newData.value?.contactImage= data?.data.toString()
-            viewModel.imageUrl.value = data?.data.toString()
+          //  val imageBitmap = data?.extras?.get("data") as Bitmap
+              //binding.imageButton.setImageBitmap(imageBitmap)
+            val takenImage=BitmapFactory.decodeFile(photoFile.absolutePath)
+            binding.imageButton.setImageBitmap(takenImage)
+            viewModel.newData.value?.contactImage = data?.data.toString()
+            // viewModel.imageUrl.value = data?.data.toString()
             Log.i("hello", "data ${viewModel.newData.value}imageUri${data?.data}")
             binding.executePendingBindings()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+    lateinit var currentPhotoPath: String
+
 
 }
