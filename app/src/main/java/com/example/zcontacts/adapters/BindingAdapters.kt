@@ -60,9 +60,9 @@ fun bindImageText(textView: TextView, data: ContactData?) {
 }
 
 fun randomNumber(): String {
-    val red = Random().nextInt(180) + 15
-    val blue = Random().nextInt(180) + 15
-    val green = Random().nextInt(180) + 15
+    val red = Random().nextInt(140) + 60
+    val blue = Random().nextInt(140) + 60
+    val green = Random().nextInt(140) + 60
     return "#${Integer.toHexString(red)}${Integer.toHexString(green)}${Integer.toHexString(blue)}"
 
 }
