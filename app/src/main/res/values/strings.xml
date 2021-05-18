@@ -18,4 +18,5 @@
     <string name="edit_action_image">Edit Action Image</string>
     <string name="delete_action_image">Delete Action Image</string>
     <string name="share_action_image">Share Action Image</string>
+    <string name="abut_us">You can organize the people and businesses in Contacts using labels. You can use the Contacts app to find someone\'s contact info or organize contacts with labels like \"friends\" or \"family.\" Android Computer. More.</string>
 </resources>
