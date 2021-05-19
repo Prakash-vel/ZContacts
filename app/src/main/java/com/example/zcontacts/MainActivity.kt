@@ -1,5 +1,7 @@
 package com.example.zcontacts
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -28,6 +30,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         NavigationUI.setupWithNavController(binding.navMenu, navController)
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            val color:Int=resources.getColor(R.color.toolBarColor)
+            window?.navigationBarColor=color
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

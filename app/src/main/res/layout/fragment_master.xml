@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/toolBarColor"
         tools:context=".overview.MasterFragment">
 <!--        <TextView-->
 <!--            android:id="@+id/textView"-->
@@ -22,10 +23,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/teal_700"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edge_list"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
 
 <!--        <TextView-->
 

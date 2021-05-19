@@ -13,9 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-
-        android:background="@drawable/custom_edge">
+        >
 
         <TextView
             android:id="@+id/personName"
@@ -23,10 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:textSize="24sp"
+            android:textColor="@color/textColor2"
+            android:textSize="20sp"
             app:bindName="@{contactData}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/personImage"
@@ -38,10 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
+            android:background="@drawable/bottom_line"
+            android:paddingBottom="10dp"
+            android:textColor="@color/textColor2"
             app:bindNumber="@{contactData.contactNumber}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,13 +53,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/personImage"
-            android:layout_width="68dp"
-            android:layout_height="68dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            app:cardCornerRadius="34dp"
             app:bind="@{contactData}"
+            app:cardCornerRadius="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -66,11 +66,12 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:srcCompat="@tools:sample/avatars"
                 android:adjustViewBounds="true"
-                android:enabled="false"
                 android:contentDescription="@string/contact_image"
-                android:scaleType="centerCrop" />
+                android:enabled="false"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+
             <TextView
                 android:id="@+id/imageText"
                 android:layout_width="match_parent"
@@ -78,8 +79,10 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="AB"
+                android:textColor="@color/textColor3"
                 android:textAlignment="center"
-                android:textSize="32sp" />
+                android:textSize="26sp"
+                android:paddingBottom="5dp"/>
         </androidx.cardview.widget.CardView>
 
 

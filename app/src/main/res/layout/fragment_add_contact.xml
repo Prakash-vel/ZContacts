@@ -14,11 +14,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/textColor1"
         android:id="@+id/scrollView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             tools:context=".addcontact.AddContactFragment">
 
 
