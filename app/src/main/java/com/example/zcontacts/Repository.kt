@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.database.ContactDatabaseDao
 import kotlinx.coroutines.*
+import javax.inject.Inject
+import javax.inject.Named
 
 
-class Repository(private val database: ContactDatabaseDao) {
+class Repository @Inject constructor(val database: ContactDatabaseDao) {
 
     val resultData = MutableLiveData<List<ContactData>>()
     val selectedData = MutableLiveData<ContactData>()

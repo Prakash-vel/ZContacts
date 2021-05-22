@@ -1,2 +1,3 @@
 rootProject.name = "Z Contacts"
 include ':app'
+include ':mylibrary'

@@ -15,17 +15,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.zcontacts.addcontact.AddContactFragmentArgs
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private val permissionCodePhone = 1
-    private lateinit var viewModel: DetailViewModel
+    private val viewModel: DetailViewModel by viewModels()
+   // private lateinit var viewModel: DetailViewModel
+    private lateinit var binding: FragmentDetailBinding
 
     @SuppressLint("WrongConstant")
     override fun onCreateView(
@@ -34,14 +38,14 @@ class DetailFragment : Fragment() {
     ): View? {
 //        // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_detail, container, false)
-        val binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
+        binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
-        val application = requireNotNull(this.activity).application
-        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
+//        val application = requireNotNull(this.activity).application
+//        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
 
-        val viewModelFactory = DetailViewModelFactory(dataSource)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(DetailViewModel::class.java)
+//        val viewModelFactory = DetailViewModelFactory(dataSource)
+//        viewModel =
+//            ViewModelProviders.of(this, viewModelFactory).get(DetailViewModel::class.java)
         binding.viewModel = viewModel
 
         val selectedId = AddContactFragmentArgs.fromBundle(requireArguments()).selectedContact

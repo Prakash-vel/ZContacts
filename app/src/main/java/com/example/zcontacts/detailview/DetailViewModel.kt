@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.zcontacts.Repository
 import com.example.zcontacts.database.ContactData
-import com.example.zcontacts.database.ContactDatabaseDao
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DetailViewModel(dataSource: ContactDatabaseDao) : ViewModel() {
+@HiltViewModel
+class DetailViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
-    private val repository = Repository(dataSource)
+    // private val repository = Repository(dataSource)
     val selectedData: LiveData<ContactData>
         get() = repository.selectedData
 

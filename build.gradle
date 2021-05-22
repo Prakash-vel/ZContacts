@@ -4,6 +4,7 @@ buildscript {
         kotlin_version = "1.4.32"
         version_navigation = "2.3.0"
         android_plugin_version = '4.2.1'
+        ext.hilt_version = '2.35'
     }
     repositories {
         google()
@@ -16,6 +17,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
         classpath "com.android.tools.build:gradle:$android_plugin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -26,7 +28,7 @@ allprojects {
         google()
         maven {url 'https://jitpack.io'}
         jcenter() // Warning: this repository is going to shut down soon
-        maven { url 'http://dl.bintray.com/amulyakhare/maven' }
+
     }
 }
 

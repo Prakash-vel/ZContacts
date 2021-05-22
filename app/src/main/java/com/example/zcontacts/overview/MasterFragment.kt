@@ -1,10 +1,14 @@
 package com.example.zcontacts.overview
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,30 +16,26 @@ import com.example.zcontacts.R
 import com.example.zcontacts.adapters.ContactAdapter
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentMasterBinding
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 
-
+@AndroidEntryPoint
 class MasterFragment : Fragment() {
 
-    private lateinit var viewModel: MasterFragmentViewModel
+    private val viewModel:MasterFragmentViewModel by viewModels()
+
+    private lateinit var binding: FragmentMasterBinding
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //auto generated code
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_master, container, false)
-        val binding = FragmentMasterBinding.inflate(layoutInflater, container, false)
+
+        binding = FragmentMasterBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
         setHasOptionsMenu(true)
 
-        //for database
-        val application = requireNotNull(this.activity).application
-        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
-
-        //for passing datasource to viewModel
-        val viewModelFactory = MasterFragmentViewModelFactory(dataSource)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(MasterFragmentViewModel::class.java)
 
         //creating layout manager and setting it to  recycler view
         val layoutManager = LinearLayoutManager(this.activity)
@@ -89,15 +89,27 @@ class MasterFragment : Fragment() {
         })
         searchView.setOnCloseListener(object : SearchView.OnCloseListener {
             override fun onClose(): Boolean {
+                //Toast.makeText( context,"closed",Toast.LENGTH_SHORT).show()
                 viewModel.getContacts(hint = null)
+//                hideKeyBoard()
+                searchView.clearFocus()
                 return true
             }
-
         })
+
+//        searchView.setOnSearchClickListener {
+//            Toast.makeText( context,"closed",Toast.LENGTH_SHORT).show()
+//
+//        }
         super.onCreateOptionsMenu(menu, inflater)
 
     }
 
+    private fun hideKeyBoard() {
+        val inputMethodManager: InputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         //for navigating when add contact icon pressed

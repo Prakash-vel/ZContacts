@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -15,24 +16,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zcontacts.database.ContactData
-import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentAddContactBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+@AndroidEntryPoint
 class AddContactFragment : Fragment() {
 
-    private lateinit var viewModel: AddContactViewModel
+    val viewModel: AddContactViewModel by viewModels()
+
     private lateinit var binding: FragmentAddContactBinding
 
 
@@ -40,16 +43,12 @@ class AddContactFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         binding = FragmentAddContactBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
-        val application = requireNotNull(this.activity).application
-        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
 
-        val viewModelFactory = AddContactViewModelFactory(dataSource)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(AddContactViewModel::class.java)
         binding.viewModel = viewModel
+
 
         val selectedId = AddContactFragmentArgs.fromBundle(requireArguments()).selectedContact
         Log.i("hello", "add contact selectedId$selectedId")
@@ -64,6 +63,7 @@ class AddContactFragment : Fragment() {
             }
         })
         binding.cancelButton.setOnClickListener {
+            hideKeyBoard()
             navigate(selectedId)
         }
         binding.imageButton.setOnClickListener {
@@ -105,7 +105,7 @@ class AddContactFragment : Fragment() {
                     contactData.contactImage = viewModel.newData.value?.contactImage.toString()
                 }
                 contactData.contactNumber = binding.phoneNumber.text.toString().toLong()
-                if (!binding.editTextTextEmailAddress.text.toString().isNullOrBlank()) {
+                if (binding.editTextTextEmailAddress.text.toString().isNotBlank()) {
                     if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.editTextTextEmailAddress.text.toString())
                             .matches()
                     ) {
@@ -122,6 +122,7 @@ class AddContactFragment : Fragment() {
                     viewModel.addContact(contactData, selectedId)
                     navigate(selectedId)
                 }
+                hideKeyBoard()
 
 
             }
@@ -147,6 +148,14 @@ class AddContactFragment : Fragment() {
         return binding.root
     }
 
+    private fun hideKeyBoard() {
+        val inputMethodManager: InputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+
+        inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+    }
+
     @SuppressLint("WrongConstant")
     private fun takeFromGallery() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -166,33 +175,6 @@ class AddContactFragment : Fragment() {
         } else {
             pickFromGallery()
         }
-    }
-
-    @SuppressLint("WrongConstant")
-    private fun takeFromCamera() {
-//        val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        startActivityForResult(takePicture, 0)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((checkSelfPermission(
-                    this.requireContext(), Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_DENIED) || (checkSelfPermission(
-                    this.requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED)
-            ) {
-                //permission denied
-                val permissions =
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                requestPermissions(permissions, permissionCodeCamera)
-
-            } else {
-                //permission already granted
-                pickFromCamera()
-            }
-        } else {
-            pickFromCamera()
-        }
-
     }
 
 
@@ -228,7 +210,7 @@ class AddContactFragment : Fragment() {
 
         } catch (e: Exception) {
             Log.i("hello", "catch called error $e")
-            takeFromCamera()
+
         }
 
     }
