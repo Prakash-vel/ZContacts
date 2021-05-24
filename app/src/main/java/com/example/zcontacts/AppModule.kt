@@ -9,7 +9,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -19,13 +18,13 @@ object AppModule {
 
 
     @Provides
-    fun provideContactDao(database:ContactDatabase):ContactDatabaseDao{
+    fun provideContactDao(database: ContactDatabase): ContactDatabaseDao {
         return database.contactDatabaseDao
     }
 
     @Singleton
     @Provides
-    fun provideContactDatabase(@ApplicationContext appContext: Context): ContactDatabase{
+    fun provideContactDatabase(@ApplicationContext appContext: Context): ContactDatabase {
         return Room.databaseBuilder(
             appContext,
             ContactDatabase::class.java,

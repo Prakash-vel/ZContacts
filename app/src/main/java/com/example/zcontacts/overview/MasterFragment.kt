@@ -18,13 +18,17 @@ import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentMasterBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MasterFragment : Fragment() {
 
     private val viewModel:MasterFragmentViewModel by viewModels()
-
     private lateinit var binding: FragmentMasterBinding
+    @Inject
+    lateinit var adapter:ContactAdapter
+
+
 
 
     override fun onCreateView(
@@ -37,16 +41,9 @@ class MasterFragment : Fragment() {
         setHasOptionsMenu(true)
 
 
-        //creating layout manager and setting it to  recycler view
-        val layoutManager = LinearLayoutManager(this.activity)
-
-        binding.recyclerView.layoutManager = layoutManager
-        // binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //creating adapter with clickListener and setting it to recyclerview
-        val adapter = ContactAdapter(ContactAdapter.OnClickListener {
-            viewModel.showDetailView(it)
-        })
+
 
         binding.recyclerView.adapter = adapter
 

@@ -30,34 +30,6 @@ fun bindNum(textView: TextView, text: Long) {
 
 }
 
-@BindingAdapter("bindImg")
-fun bindImage(imageView: ImageView, data: ContactData?) {
-    Log.i("hello", "image$data")
-//    if (!data?.contactImage.isNullOrBlank()) {
-//        imageView.isEnabled = true
-//        imageView.setImageURI(data?.contactImage?.toUri())
-//
-//    } else if (!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()) {
-//        imageView.isEnabled = false
-//    }
-}
-
-@BindingAdapter("bindImageText")
-fun bindImageText(textView: TextView, data: ContactData?) {
-//      if (!data?.contactImage.isNullOrBlank()) {
-//        textView.isEnabled = false
-//    } else {
-//        // textView.setBackgroundColor(Color.parseColor(randomNumber()))
-//        if (!data?.contactFirstName.isNullOrBlank() && !data?.contactLastName.isNullOrBlank()) {
-//            textView.isEnabled = true
-//            textView.text = "${data?.contactFirstName?.first()}${data?.contactLastName?.first()}"
-//        } else {
-//            textView.isEnabled = true
-//            textView.text = "${data?.contactFirstName?.first()}"
-//        }
-//
-//    }
-}
 
 fun randomNumber(): String {
     val red = Random().nextInt(140) + 60
@@ -103,7 +75,7 @@ fun bind(cardView: CardView, data: ContactData?) {
 @BindingAdapter("bindImage")
 fun bindImg(imageView: ImageView, uri: String?) {
     Log.i("hello", "image$uri")
-//
+
     if (!uri.isNullOrBlank()) {
         imageView.setImageURI(uri.toUri())
     }
