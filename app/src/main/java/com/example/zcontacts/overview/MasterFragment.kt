@@ -25,8 +25,6 @@ class MasterFragment : Fragment() {
 
     private val viewModel:MasterFragmentViewModel by viewModels()
     private lateinit var binding: FragmentMasterBinding
-    @Inject
-    lateinit var adapter:ContactAdapter
 
 
 
@@ -43,7 +41,9 @@ class MasterFragment : Fragment() {
 
 
         //creating adapter with clickListener and setting it to recyclerview
-
+        val adapter = ContactAdapter(ContactAdapter.OnClickListener {
+            viewModel.showDetailView(it)
+        })
 
         binding.recyclerView.adapter = adapter
 
