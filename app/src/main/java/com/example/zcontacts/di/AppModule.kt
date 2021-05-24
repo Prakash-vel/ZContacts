@@ -1,4 +1,4 @@
-package com.example.zcontacts
+package com.example.zcontacts.di
 
 import android.content.Context
 import androidx.room.Room
@@ -29,7 +29,9 @@ object AppModule {
             appContext,
             ContactDatabase::class.java,
             "ContactDatabase"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
 

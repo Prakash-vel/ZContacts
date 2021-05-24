@@ -10,27 +10,4 @@ abstract class ContactDatabase : RoomDatabase() {
 
     abstract val contactDatabaseDao: ContactDatabaseDao
 
-//    companion object {
-//
-//        @Volatile
-//        private var INSTANCE: ContactDatabase? = null
-//        fun getInstance(context: Context): ContactDatabase {
-//            synchronized(this) {
-//                var instance = INSTANCE
-//                if (instance == null) {
-//                    instance = Room.databaseBuilder(
-//                        context.applicationContext,
-//                        ContactDatabase::class.java,
-//                        "ContactDatabase"
-//                    )
-//                        .fallbackToDestructiveMigration()
-//                        .build()
-//                    INSTANCE = instance
-//                }
-//                return instance
-//            }
-//
-//        }
-//    }
-
 }

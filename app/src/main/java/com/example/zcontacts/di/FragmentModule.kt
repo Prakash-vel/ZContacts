@@ -1,4 +1,4 @@
-package com.example.zcontacts
+package com.example.zcontacts.di
 
 import dagger.Module
 import dagger.hilt.InstallIn

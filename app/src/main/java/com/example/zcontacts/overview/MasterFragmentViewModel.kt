@@ -1,20 +1,17 @@
 package com.example.zcontacts.overview
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.zcontacts.Repository
+import com.example.zcontacts.database.Repository
 import com.example.zcontacts.database.ContactData
-import com.example.zcontacts.database.ContactDatabaseDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MasterFragmentViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class MasterFragmentViewModel @Inject constructor(private val repository: Repository) :
+    ViewModel() {
 
-
-   // val repository = Repository(dataSource)
 
     val contactData: LiveData<List<ContactData>>
         get() = repository.resultData

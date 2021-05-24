@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.zcontacts.Repository
+import com.example.zcontacts.database.Repository
 import com.example.zcontacts.database.ContactData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

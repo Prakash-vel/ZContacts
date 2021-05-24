@@ -5,28 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.zcontacts.R
 import com.example.zcontacts.adapters.ContactAdapter
-import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.databinding.FragmentMasterBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MasterFragment : Fragment() {
 
-    private val viewModel:MasterFragmentViewModel by viewModels()
+    private val viewModel: MasterFragmentViewModel by viewModels()
     private lateinit var binding: FragmentMasterBinding
-
-
 
 
     override fun onCreateView(
@@ -37,7 +29,6 @@ class MasterFragment : Fragment() {
         binding = FragmentMasterBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
         setHasOptionsMenu(true)
-
 
 
         //creating adapter with clickListener and setting it to recyclerview
@@ -107,6 +98,7 @@ class MasterFragment : Fragment() {
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         //for navigating when add contact icon pressed
