@@ -2,15 +2,13 @@ package com.example.zcontacts.database
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.zcontacts.database.ContactData
-import com.example.zcontacts.database.ContactDatabaseDao
 import kotlinx.coroutines.*
 import javax.inject.Inject
-import javax.inject.Named
 
 
 class Repository @Inject constructor(val database: ContactDatabaseDao) {
 
+    //    lateinit var database: ContactDatabaseDao
     val resultData = MutableLiveData<List<ContactData>>()
     val selectedData = MutableLiveData<ContactData>()
     val repoJob = Job()

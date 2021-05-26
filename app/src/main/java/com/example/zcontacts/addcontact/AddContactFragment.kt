@@ -21,34 +21,34 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.databinding.FragmentAddContactBinding
-import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-@AndroidEntryPoint
+
 class AddContactFragment : Fragment() {
 
-    val viewModel: AddContactViewModel by viewModels()
-
+    private lateinit var viewModel: AddContactViewModel
     private lateinit var binding: FragmentAddContactBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentAddContactBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
 
-        binding.viewModel = viewModel
 
+        val viewModelFactory = AddContactViewModelFactory()
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(AddContactViewModel::class.java)
+        binding.viewModel = viewModel
 
         val selectedId = AddContactFragmentArgs.fromBundle(requireArguments()).selectedContact
         Log.i("hello", "add contact selectedId$selectedId")
@@ -72,17 +72,19 @@ class AddContactFragment : Fragment() {
             val options = arrayOf("Camera", "Gallery", "Cancel")
             builder.setTitle("Choose your picture!")
             builder.setItems(options) { dialog, item ->
-                if (options[item] == options[0]) {
-                    pickFromCamera()
-                } else if (options[item] == options[1]) {
-                    takeFromGallery()
-                } else if (options[item] == options[2]) {
-                    dialog.dismiss()
+                when {
+                    options[item] == options[0] -> {
+                        pickFromCamera()
+                    }
+                    options[item] == options[1] -> {
+                        takeFromGallery()
+                    }
+                    options[item] == options[2] -> {
+                        dialog.dismiss()
+                    }
                 }
             }
             builder.show()
-
-
         }
 
         binding.addButton.setOnClickListener {

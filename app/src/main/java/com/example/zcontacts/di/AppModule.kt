@@ -1,22 +1,19 @@
 package com.example.zcontacts.di
 
-import android.content.Context
 import androidx.room.Room
+import com.example.zcontacts.MyApplication
 import com.example.zcontacts.database.ContactDatabase
 import com.example.zcontacts.database.ContactDatabaseDao
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Module
-@InstallIn(SingletonComponent::class)
-object AppModule {
+class AppModule @Inject constructor(val application: MyApplication) {
 
-
+    @Singleton
     @Provides
     fun provideContactDao(database: ContactDatabase): ContactDatabaseDao {
         return database.contactDatabaseDao
@@ -24,15 +21,17 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactDatabase(@ApplicationContext appContext: Context): ContactDatabase {
+    fun provideContactDatabase(): ContactDatabase {
         return Room.databaseBuilder(
-            appContext,
+            application.applicationContext,
             ContactDatabase::class.java,
             "ContactDatabase"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).build()
     }
 
-
 }
+
+
+
+
+

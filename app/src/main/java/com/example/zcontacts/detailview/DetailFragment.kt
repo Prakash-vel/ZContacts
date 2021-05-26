@@ -15,30 +15,32 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.zcontacts.addcontact.AddContactFragmentArgs
 import com.example.zcontacts.databinding.FragmentDetailBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class DetailFragment : Fragment() {
 
     private val permissionCodePhone = 1
-    private val viewModel: DetailViewModel by viewModels()
+    private lateinit var viewModel: DetailViewModel
 
-    // private lateinit var viewModel: DetailViewModel
     private lateinit var binding: FragmentDetailBinding
 
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
 
+
+        val viewModelFactory = DetailViewModelFactory()
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
         binding.viewModel = viewModel
 
         val selectedId = AddContactFragmentArgs.fromBundle(requireArguments()).selectedContact
@@ -56,11 +58,12 @@ class DetailFragment : Fragment() {
             builder.setCancelable(true)
             builder.setTitle("Confirm Delete..")
             builder.setMessage("Are you sure you really want to delete this contact?")
-            builder.setPositiveButton(R.string.cancel,
-                { dialog, which -> })
+            builder.setPositiveButton(
+                R.string.cancel
+            ) { _, _ -> }
             builder.setNegativeButton(
                 "Confirm"
-            ) { dialog, which ->
+            ) { _, _ ->
                 viewModel.deleteContact(selectedId)
                 this.findNavController()
                     .navigate(DetailFragmentDirections.actionDetailFragmentToMasterFragment())
@@ -126,7 +129,7 @@ class DetailFragment : Fragment() {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            permissionCodePhone -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            permissionCodePhone -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 makePhoneCall()
             } else {
                 Toast.makeText(this.context, "Permission Denied ", Toast.LENGTH_SHORT).show()

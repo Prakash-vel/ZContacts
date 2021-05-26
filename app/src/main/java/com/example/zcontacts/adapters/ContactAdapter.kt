@@ -1,7 +1,9 @@
 package com.example.zcontacts.adapters
 
+import android.net.sip.SipSession
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,12 +12,12 @@ import com.example.zcontacts.database.ContactData
 import com.example.zcontacts.databinding.ContactItemBinding
 
 
-class ContactAdapter(private val onClickListener: OnClickListener) :
+class ContactAdapter(private val listener: View.OnClickListener) :
     ListAdapter<ContactData, ContactAdapter.ViewHolder>(ContactDiffUtil()) {
 
-    class OnClickListener(val clickListener: (contactData: ContactData) -> Unit) {
-        fun onClick(contactData: ContactData) = clickListener(contactData)
-    }
+//    class OnClickListener(val clickListener: (contactData: ContactData) -> Unit) {
+//        fun onClick(contactData: ContactData) = clickListener(contactData)
+//    }
 
     class ViewHolder(val binding: ContactItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ContactData) {
@@ -40,9 +42,17 @@ class ContactAdapter(private val onClickListener: OnClickListener) :
         try {
             val item = getItem(position)
             Log.i("hello", "onBind called$item")
-            holder.itemView.setOnClickListener {
-                onClickListener.onClick(item)
-            }
+//            holder.itemView.setOnClickListener {
+//                onClickListener.onClick(item)
+//            }
+//            holder.itemView.setOnClickListener{
+//
+//            }
+//            val listener=View.OnClickListener {
+//                val id = it.getTag()
+//            }
+            holder.itemView.setTag(item.contactId)
+            holder.itemView.setOnClickListener (listener)
             holder.bind(item)
         } catch (e: Exception) {
             Log.i("hello", "error$e")

@@ -1,51 +1,58 @@
 package com.example.zcontacts.overview
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.zcontacts.R
 import com.example.zcontacts.adapters.ContactAdapter
 import com.example.zcontacts.databinding.FragmentMasterBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class MasterFragment : Fragment() {
 
-    private val viewModel: MasterFragmentViewModel by viewModels()
+    private lateinit var viewModel: MasterFragmentViewModel
     private lateinit var binding: FragmentMasterBinding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentMasterBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
         setHasOptionsMenu(true)
 
+        val listener = View.OnClickListener {
+            val id: Long = it.tag as Long
+            viewModel.showDetailView(id)
+        }
 
         //creating adapter with clickListener and setting it to recyclerview
-        val adapter = ContactAdapter(ContactAdapter.OnClickListener {
-            viewModel.showDetailView(it)
-        })
+//        val adapter = ContactAdapter(ContactAdapter.OnClickListener {
+//            viewModel.showDetailView(it)
+//        })
 
+        val adapter = ContactAdapter(listener)
+
+//        viewModel by activityViewModels()
+        val viewModelFactory = MasterFragmentViewModelFactory()
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(MasterFragmentViewModel::class.java)
         binding.recyclerView.adapter = adapter
 
         //for navigating to detail screen from master screen
-        viewModel.selectedCountry.observe(this.viewLifecycleOwner, {
+        viewModel.selectedCountry.observe(this.viewLifecycleOwner) {
             if (it != null) {
                 this.findNavController()
-                    .navigate(MasterFragmentDirections.actionMasterFragmentToDetailFragment(it.contactId))
+                    .navigate(MasterFragmentDirections.actionMasterFragmentToDetailFragment(it))
                 viewModel.showDetailViewComplete()
             }
-        })
+        }
 
         //for updating recycler view
         viewModel.contactData.observe(this.viewLifecycleOwner, {
@@ -75,15 +82,12 @@ class MasterFragment : Fragment() {
             }
 
         })
-        searchView.setOnCloseListener(object : SearchView.OnCloseListener {
-            override fun onClose(): Boolean {
-                //Toast.makeText( context,"closed",Toast.LENGTH_SHORT).show()
-                viewModel.getContacts(hint = null)
-//                hideKeyBoard()
-                searchView.clearFocus()
-                return true
-            }
-        })
+        searchView.setOnCloseListener { //Toast.makeText( context,"closed",Toast.LENGTH_SHORT).show()
+            viewModel.getContacts(hint = null)
+            //                hideKeyBoard()
+            searchView.clearFocus()
+            true
+        }
 
 //        searchView.setOnSearchClickListener {
 //            Toast.makeText( context,"closed",Toast.LENGTH_SHORT).show()
@@ -93,11 +97,11 @@ class MasterFragment : Fragment() {
 
     }
 
-    private fun hideKeyBoard() {
-        val inputMethodManager: InputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
-    }
+//    private fun hideKeyBoard() {
+//        val inputMethodManager: InputMethodManager =
+//            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
